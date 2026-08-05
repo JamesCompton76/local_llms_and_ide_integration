@@ -42,29 +42,21 @@ Access the UI at: http://localhost:3000
    - Search for **Continue** and install the official extension.
 
 2. **Open the Config:**
-   - Once installed, click the Continue icon in your VS Code sidebar.
-   - At the bottom of the Continue sidebar, click the **Gear (Config) icon**. This opens your `config.json` file.
+   - Press `Ctrl + Shift + P` (or `F1`) to open the VS Code Command Palette.
+   - Type `Continue: Open Config File` and hit Enter to open `config.yaml`.
+   - *(Note: Ensure you are editing the Windows host file at `%USERPROFILE%\.continue\config.yaml` rather than a blank Linux one).*
 
 3. **Update the Model List:**
-   - Locate the "models" array inside that JSON file.
-   - Add your local Ollama endpoints by pasting this block inside the "models" array:
+   - Replace the default contents of `config.yaml` with your custom local models:
 
-   {
-     "title": "Qwen 3.6 Coder",
-     "provider": "ollama",
-     "model": "qwen3.6:35b-a3b"
-   },
-   {
-     "title": "DeepSeek R1",
-     "provider": "ollama",
-     "model": "deepseek-r1:32b"
-   }
-
-4. **Activate it:**
-   - Save the `config.json` file.
-   - Go back to the Continue sidebar. You will now see your models in the dropdown at the bottom. Select one of them to make it active.
-
-5. **Start using it:**
-   - **Chat:** Click the Continue sidebar to chat normally (Ctrl+L).
-   - **Inline Edit:** Highlight any block of code, press Ctrl+I, and tell the model what to change (e.g., "Refactor this to use DuckDB instead of pandas").
-   - **Context:** Continue automatically indexes open files, so you can ask it to explain how different scripts interact by using context tags like @file or @codebase.
+   ```yaml
+   name: Main Config
+   version: 1.0.0
+   schema: v1
+   models:
+     - name: Qwen 3.6 Coder
+       provider: ollama
+       model: qwen3.6:35b-a3b
+     - name: DeepSeek R1
+       provider: ollama
+       model: deepseek-r1:32b
