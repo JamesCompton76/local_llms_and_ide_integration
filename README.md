@@ -1,6 +1,6 @@
 # Local AI Development Environment
 
-My personal setup for running top-tier 32B+ open-weight LLMs locally for data engineering, Python, and SQL development.
+My personal setup for running top-tier 27B–32B open-weight LLMs locally for data engineering, Python, and SQL development.
 
 ## Hardware Setup
 - **CPU:** AMD Ryzen 9 9950X3D
@@ -10,8 +10,8 @@ My personal setup for running top-tier 32B+ open-weight LLMs locally for data en
 - **OS:** Windows 11 with Ubuntu WSL2
 
 ## The Models
-This setup utilizes the 32GB of VRAM on the RTX 5090 to run 4-bit quantized ~30B parameter models via Ollama.
-- **Qwen 3.6 (35B-A3B):** General coding, DuckDB/PySpark scripting, and fast iteration. Uses Mixture of Experts (MoE) for speed.
+This setup utilizes the 32GB of VRAM on the RTX 5090 to run quantized ~27B–32B parameter models via Ollama.
+- **Qwen 3.8 (27B):** General coding, DuckDB/PySpark scripting, and fast iteration.
 - **DeepSeek R1 (32B):** Chain-of-thought model for complex architecture, logic puzzles, and deep debugging.
 
 ## Installation & Setup
@@ -20,12 +20,13 @@ This setup utilizes the 32GB of VRAM on the RTX 5090 to run 4-bit quantized ~30B
 Require `zstd` to unpack Ollama binaries:
 sudo apt-get update && sudo apt-get install zstd -y
 
-### 2. Install Ollama
-Install the native Linux binary to utilize WSL2 GPU passthrough:
+### 2. Install / Update Ollama
+Install or update the native Linux binary to utilize WSL2 GPU passthrough:
 curl -fsSL https://ollama.com/install.sh | sh
+sudo systemctl restart ollama
 
 ### 3. Pull the Models
-ollama run qwen3.6:35b-a3b
+ollama run qwen3.8:27b
 ollama run deepseek-r1:32b
 
 ### 4. Setup Open WebUI (Local ChatGPT Interface)
@@ -42,21 +43,29 @@ Access the UI at: http://localhost:3000
    - Search for **Continue** and install the official extension.
 
 2. **Open the Config:**
-   - Press `Ctrl + Shift + P` (or `F1`) to open the VS Code Command Palette.
-   - Type `Continue: Open Config File` and hit Enter to open `config.yaml`.
-   - *(Note: Ensure you are editing the Windows host file at `%USERPROFILE%\.continue\config.yaml` rather than a blank Linux one).*
+   - In your WSL2 terminal, open your Windows host Continue config:
+     code /mnt/c/Users/james/.continue/config.yaml
+   - *(Or press `Ctrl + O` in VS Code and navigate to `C:\Users\james\.continue\config.yaml`)*.
 
 3. **Update the Model List:**
-   - Replace the default contents of `config.yaml` with your custom local models:
+   - Set the contents of `config.yaml` to:
 
-   ```yaml
    name: Main Config
    version: 1.0.0
    schema: v1
    models:
-     - name: Qwen 3.6 Coder
+     - name: Qwen 3.8 27B
        provider: ollama
-       model: qwen3.6:35b-a3b
+       model: qwen3.8:27b
      - name: DeepSeek R1
        provider: ollama
        model: deepseek-r1:32b
+
+4. **Activate it:**
+   - Save the file (`Ctrl + S`).
+   - Open the Continue sidebar (Ctrl+L) and select **Qwen 3.8 27B** from the model dropdown.
+
+5. **Usage:**
+   - **Chat:** Open the sidebar to prompt normally (Ctrl+L).
+   - **Inline Edit:** Highlight code and hit Ctrl+I to refactor inline.
+   - **Context:** Reference project context using `@file`, `@codebase`, or `@docs`.
