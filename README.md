@@ -30,8 +30,8 @@ ollama run qwen3.8:27b
 ollama run deepseek-r1:32b
 
 ### 4. Setup Open WebUI (Local ChatGPT Interface)
-Run the web interface via Docker using host networking to access native Ollama on WSL2:
-docker run -d --network="host" -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+Run the web interface via Docker using host networking to access native Ollama on WSL2. Authentication is explicitly disabled for single-user desktop access:
+docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway -e WEBUI_AUTH=False -v open-webui-fresh:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
 
 Access the UI at: http://localhost:3000
 
